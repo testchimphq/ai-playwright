@@ -1,16 +1,16 @@
-# ai-act
+# ai-wright
 
 AI steps (`ai.act`, `ai.verify`) in your Playwright tests — open source, vision-enabled, with no vendor lock-in.
 
 ## Introduction
 
-`ai-act` lets you include AI-powered actions, verifications, and data extraction in any Playwright test. It supports:
+`ai-wright` lets you include AI-powered actions, verifications, and data extraction in any Playwright test. It supports:
 - BYOL (bring-your-own-license) to use your own [OpenAI](./src/llm-providers/openai.md), [Google Gemini](./src/llm-providers/gemini.md), or [Anthropic Claude](./src/llm-providers/claude.md) API keys.
 - or use your [TestChimp](https://testchimp.io) license key to avoid paying separately for token usage. 
 
-Unlike other solutions, `ai-act` relies on *vision intelligence*: screenshots are annotated with Set-of-Marks (SoM) overlays and combined with DOM element maps for disambiguation, so the LLM can navigate complex UIs with far greater accuracy and resilience.
+Unlike other solutions, `ai-wright` relies on *vision intelligence*: screenshots are annotated with Set-of-Marks (SoM) overlays and combined with DOM element maps for disambiguation, so the LLM can navigate complex UIs with far greater accuracy and resilience.
 
-**Why teams adopt `ai-act`:**
+**Why teams adopt `ai-wright`:**
 - **Vendor flexibility & BYOL** – use your own [OpenAI](./src/llm-providers/openai.md), [Gemini](./src/llm-providers/gemini.md), or [Claude](./src/llm-providers/claude.md) keys, or your [TestChimp](https://testchimp.io) license (to avoid separate token usage costs).
 - **Vision-first semantics** – SoM overlays + DOM metadata give the model precise context.
 - **Resilient prompting** – pre-action planning (eg: handling blockers like modals before addressing the actual requirement step), retry guidance, ability to handle coarse-grained steps with multi-step planning.
@@ -22,15 +22,15 @@ Unlike other solutions, `ai-act` relies on *vision intelligence*: screenshots ar
 ### Installation
 
 ```bash
-npm install ai-act
+npm install ai-wright
 # or
-yarn add ai-act
+yarn add ai-wright
 ```
 
 Then import the library inside your Playwright tests:
 
 ```ts
-import { ai } from 'ai-act';
+import { ai } from 'ai-wright';
 ```
 
 ### AI Commands
@@ -75,7 +75,7 @@ const orderIds = await ai.extract('List the order IDs from the table', {
 
 ### Authentication
 
-`ai-act` chooses credentials in priority order:
+`ai-wright` chooses credentials in priority order:
 
 1. **OpenAI API key**
    - Set `OPENAI_API_KEY` env var. (and optionally `OPENAI_MODEL`, defaults to `gpt-5-mini`).
@@ -93,7 +93,7 @@ The selection order is configurable in [`src/llm-providers/config.ts`](./src/llm
 
 ```ts
 import { test } from '@playwright/test';
-import { ai } from 'ai-act';
+import { ai } from 'ai-wright';
 
 test('send message', async ({ page }) => {
   await ai.act('Log in with alice@example.com / TestPass123', { page, test });
@@ -145,7 +145,7 @@ Optional context/options:
 ### Fully-Agentic Test Suites
 - Vendor lock in. Fully agentic tests require proprietary runners and custom formats, which result in vendor lock-in.
 - All steps are agentic, resulting in slow, costly, non-deterministic tests.
-- `ai-act` enables a hybrid approach: keep 90% of your test deterministic Playwright code, and inject AI only for the messy, nondeterministic UI flows / verifications.
+- `ai-wright` enables a hybrid approach: keep 90% of your test deterministic Playwright code, and inject AI only for the messy, nondeterministic UI flows / verifications.
 - This balances speed and reliability while still unlocking AI flexibility where you _actually_ need it.
 
 ---
@@ -155,7 +155,7 @@ AI where it helps, plain Playwright everywhere else.
 
 ## Author
 
-`ai-act` is an Open source project contributed by [TestChimp](https://testchimp.io) — an AI QA platform that learns your web app through explorations, to provide context-aware AI assistance to QA workflows.
+`ai-wright` is an Open source project contributed by [TestChimp](https://testchimp.io) — an AI QA platform that learns your web app through explorations, to provide context-aware AI assistance to QA workflows.
 
 ## License
 

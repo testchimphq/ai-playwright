@@ -1,5 +1,5 @@
 {
-  "name": "ai-act",
+  "name": "ai-wright",
   "version": "0.0.1",
   "description": "AI-steps in your Playwright scripts",
   "main": "dist/index.js",

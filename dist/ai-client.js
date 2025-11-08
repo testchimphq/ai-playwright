@@ -18,7 +18,7 @@ function isDebugEnvEnabled() {
 }
 function debugLog(...messages) {
     if (isDebugEnvEnabled()) {
-        console.log('[ai-act]', ...messages);
+        console.log('[ai-wright]', ...messages);
     }
 }
 const DEFAULT_LLM_TIMEOUT_MS = 120000;
