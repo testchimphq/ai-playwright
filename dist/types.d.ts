@@ -7,6 +7,7 @@ export interface AiActionResult {
     extractedContent?: string;
     confidence?: number;
     verificationSuccess?: boolean;
+    verificationReason?: string;
     commandsToRun?: SomCommand[];
     shouldWait?: boolean;
     waitReason?: string;

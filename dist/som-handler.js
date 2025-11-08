@@ -1365,65 +1365,8 @@ class PageSoMHandler {
      * Marker persists through screenshots so agent can see where coords landed
      */
     async drawCoordinateMarker(pixelX, pixelY) {
-        await this.page.evaluate(({ x, y }) => {
-            // Remove any existing coordinate marker and labels
-            const existing = document.getElementById('tc-coord-marker');
-            if (existing)
-                existing.remove();
-            const existingLabels = Array.from(document.querySelectorAll('div')).filter(el => el.textContent === 'clicked' && el.style.position === 'fixed');
-            existingLabels.forEach(label => label.remove());
-            // Create marker element
-            const marker = document.createElement('div');
-            marker.id = 'tc-coord-marker';
-            marker.style.cssText = `
-        position: fixed;
-        left: ${x}px;
-        top: ${y}px;
-        width: 24px;
-        height: 24px;
-        margin-left: -12px;
-        margin-top: -12px;
-        border-radius: 50%;
-        background: rgba(255, 0, 255, 0.8);
-        border: 3px solid rgba(255, 255, 0, 0.95);
-        z-index: 2147483647;
-        pointer-events: none;
-        box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
-        animation: tc-pulse 0.5s ease-out;
-      `;
-            // Add label showing this was a coord click
-            const label = document.createElement('div');
-            label.style.cssText = `
-        position: fixed;
-        left: ${x + 15}px;
-        top: ${y - 20}px;
-        background: rgba(255, 0, 255, 0.9);
-        color: white;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-size: 11px;
-        font-weight: bold;
-        font-family: Arial;
-        z-index: 2147483647;
-        pointer-events: none;
-        white-space: nowrap;
-      `;
-            label.textContent = 'clicked';
-            // Add pulsing animation
-            const style = document.createElement('style');
-            style.textContent = `
-        @keyframes tc-pulse {
-          0% { transform: scale(0); opacity: 0; }
-          50% { transform: scale(1.5); opacity: 1; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-      `;
-            document.head.appendChild(style);
-            document.body.appendChild(marker);
-            document.body.appendChild(label);
-        }, { x: pixelX, y: pixelY });
-        // Brief pause for animation to complete, then marker stays visible
-        await this.page.waitForTimeout(300);
+        // Coordinate markers are suppressed to avoid adding noise to screenshots.
+        await this.removeCoordinateMarker();
     }
     /**
      * Remove coordinate marker from page (used when cleaning up or replacing)

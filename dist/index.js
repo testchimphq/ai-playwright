@@ -165,11 +165,13 @@ const VERIFY_PROMPT_STATIC = [
     'Respond with JSON ONLY that matches this schema exactly:',
     '{',
     '  "verificationSuccess": true,',
-    '  "confidence": 95',
+    '  "confidence": 95,',
+    '  "verificationReason": "why verificationSuccess is false (empty string when true)"',
     '}',
     '',
-    'Use camelCase field names (verificationSuccess, confidence).',
+    'Use camelCase field names (verificationSuccess, confidence, verificationReason).',
     'confidence must be between 0 and 100.',
+    'When verificationSuccess is false, provide verificationReason explaining the failure.',
     '',
 ];
 function logDebug(message, details) {
@@ -331,9 +333,13 @@ function extractVerification(result) {
     if (result.confidence === undefined) {
         throw new Error('LLM response missing confidence field.');
     }
+    if (result.verificationReason !== undefined && typeof result.verificationReason !== 'string') {
+        throw new Error('verificationReason must be a string when provided.');
+    }
     return {
         verificationSuccess: result.verificationSuccess,
         confidence: result.confidence,
+        verificationReason: result.verificationReason,
     };
 }
 function castToNumber(value, fieldName) {
@@ -551,17 +557,20 @@ async function verify(requirement, context, options) {
         userPrompt: buildVerifyUserPrompt(requirement),
         image: screenshot,
     });
-    const { verificationSuccess, confidence } = extractVerification(aiResult);
-    logDebug('ai.verify result from LLM', { verificationSuccess, confidence });
+    const { verificationSuccess, confidence, verificationReason } = extractVerification(aiResult);
+    logDebug('ai.verify result from LLM', { verificationSuccess, confidence, verificationReason });
     const threshold = Math.max(0, options?.confidence_threshold ?? DEFAULT_CONFIDENCE_THRESHOLD);
     const expectFn = options?.expect ?? resolveExpect(context);
     if (!expectFn) {
         throw new Error('verify() requires Playwright expect. Pass the Playwright test object or provide expect explicitly.');
     }
+    if (!verificationSuccess && verificationReason) {
+        logDebug('ai.verify reported failure reason', { verificationReason });
+    }
     logDebug('ai.verify asserting', { threshold });
     expectFn(confidence, `AI verification confidence ${confidence} is below threshold ${threshold}`).toBeGreaterThanOrEqual(threshold);
-    expectFn(verificationSuccess, `AI verification failed for requirement: ${requirement}`).toBe(true);
-    const response = { verificationSuccess, confidence };
+    expectFn(verificationSuccess, `AI verification failed for requirement: ${requirement}${verificationReason ? ` - ${verificationReason}` : ''}`).toBe(true);
+    const response = { verificationSuccess, confidence, verificationReason };
     logDebug('ai.verify completed', response);
     return response;
 }

@@ -11,11 +11,11 @@ AI steps (`ai.act`, `ai.verify`) in your Playwright tests — open source, visio
 Unlike other solutions, `ai-playwright` relies on *vision intelligence*: screenshots are annotated with Set-of-Marks (SoM) overlays and combined with DOM element maps for disambiguation, so the LLM can navigate complex UIs with far greater accuracy and resilience.
 
 **Why teams adopt `ai-playwright`:**
-- **Vendor flexibility & BYOL** – use your own [OpenAI](./src/llm-providers/openai.md), [Gemini](./src/llm-providers/gemini.md), or [Claude](./src/llm-providers/claude.md) keys, or your [TestChimp](https://testchimp.io) license (to avoid separate token usage costs), or extend the pluggable interface to support a local model—no vendor lock-in.
+- **Vendor flexibility & BYOL** – use your own [OpenAI](./src/llm-providers/openai.md), [Gemini](./src/llm-providers/gemini.md), or [Claude](./src/llm-providers/claude.md) keys, or your [TestChimp](https://testchimp.io) license (to avoid separate token usage costs).
 - **Vision-first semantics** – SoM overlays + DOM metadata give the model precise context.
 - **Resilient prompting** – pre-action planning (eg: handling blockers like modals before addressing the actual requirement step), retry guidance, ability to handle coarse-grained steps with multi-step planning.
 - **Open source** – complete transparency and community support.
-- **Pluggable LLM providers** – extend to Gemini, Claude, or local models by implementing a provider (see [src/llm-providers/README.md](./src/llm-providers/README.md)).
+- **Pluggable LLM providers** – extend to any LLM provider (eg: a local LLM) by implementing a provider (see [src/llm-providers/README.md](./src/llm-providers/README.md)).
 
 ## Usage Guide
 

@@ -38,6 +38,7 @@ declare function act(objective: string, context: ActContext): Promise<AiActResul
 declare function verify(requirement: string, context: VerifyContext, options?: VerifyOptions): Promise<{
     verificationSuccess: boolean;
     confidence: number;
+    verificationReason: string | undefined;
 }>;
 declare function extract(requirement: string, context: VerifyContext, options?: ExtractOptions): Promise<string | string[] | number | number[]>;
 export declare const ai: {

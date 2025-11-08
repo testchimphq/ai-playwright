@@ -156,6 +156,13 @@ function validateAiActionResult(payload: unknown): AiActionResult {
     result.confidence = data.confidence;
   }
 
+  if (data.verificationReason !== undefined) {
+    if (typeof data.verificationReason !== 'string') {
+      throw new Error('verificationReason must be a string.');
+    }
+    result.verificationReason = data.verificationReason;
+  }
+
   return result;
 }
 
